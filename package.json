@@ -1,0 +1,8 @@
+{
+  "name": "ai-color-accessibility",
+  "private": true,
+  "description": "Runs the backend proxy and the ColorBridge website together. See README.md.",
+  "scripts": {
+    "start": "node start.js"
+  }
+}

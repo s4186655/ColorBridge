@@ -1,0 +1,355 @@
+/* ColorBridge — blue + yellow theme */
+
+:root {
+  --blue-900: #0b2a5e;
+  --blue-700: #1a4fb4;
+  --blue-600: #2563eb;
+  --blue-500: #3b82f6;
+  --blue-100: #dbe7ff;
+  --blue-50: #f1f6ff;
+  --yellow-500: #eab308;
+  --yellow-400: #facc15;
+  --yellow-100: #fef3c7;
+  --ink: #10203f;
+  --ink-soft: #4b5a78;
+  --border: #dce4f5;
+  --white: #ffffff;
+  --radius: 12px;
+  --shadow: 0 8px 28px rgba(15, 45, 110, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+/* Author styles (like .btn's display:inline-flex) otherwise beat the
+   browser's default [hidden]{display:none} rule regardless of specificity,
+   since author CSS always wins over the user-agent stylesheet. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--blue-50);
+  line-height: 1.55;
+}
+
+a { color: var(--blue-700); }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- header ---------- */
+
+header.site-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--blue-900);
+  text-decoration: none;
+}
+
+.brand .mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue-600), var(--blue-900));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--yellow-400);
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.header-actions { position: relative; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-primary { background: var(--blue-600); color: #fff; }
+.btn-primary:hover { background: var(--blue-700); }
+
+.btn-accent { background: var(--yellow-400); color: var(--blue-900); }
+.btn-accent:hover { background: var(--yellow-500); }
+
+.btn-ghost { background: transparent; color: var(--blue-700); border: 1.5px solid var(--blue-100); }
+.btn-ghost:hover { background: var(--blue-50); }
+
+.btn-block { width: 100%; justify-content: center; }
+
+/* account pill in header, shown after sign-in */
+.account-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue-50);
+  border: 1.5px solid var(--blue-100);
+  border-radius: 999px;
+  padding: 6px 8px 6px 14px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.account-pill .name { font-weight: 700; font-size: 14px; color: var(--ink); }
+
+.tier-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.tier-badge.free { background: var(--blue-100); color: var(--blue-700); }
+.tier-badge.pro { background: var(--yellow-400); color: var(--blue-900); }
+
+.account-pill .avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--blue-600);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* dropdown */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 280px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  display: none;
+}
+.dropdown.open { display: block; }
+.dropdown .who { font-size: 13px; color: var(--ink-soft); margin: 0 0 12px; word-break: break-all; }
+.dropdown .plan-line { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.dropdown .plan-line strong { font-size: 14px; }
+
+.upgrade-box {
+  background: linear-gradient(135deg, var(--blue-50), var(--yellow-100));
+  border: 1px solid var(--blue-100);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.upgrade-box .price { font-size: 20px; font-weight: 800; color: var(--blue-900); }
+.upgrade-box .price span { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+.upgrade-box ul { margin: 8px 0 12px; padding-left: 18px; font-size: 13px; color: var(--ink-soft); }
+.upgrade-box ul li { margin: 3px 0; }
+
+.dropdown .signout {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 10px 4px 2px;
+  font: inherit;
+  font-size: 13px;
+  color: #b42323;
+  cursor: pointer;
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  background: linear-gradient(180deg, var(--blue-50), var(--white));
+  padding: 64px 0 48px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 40px;
+  margin: 0 0 14px;
+  color: var(--blue-900);
+  letter-spacing: -0.02em;
+}
+.hero h1 .accent { color: var(--yellow-500); }
+.hero .tagline { font-size: 17px; color: var(--ink-soft); max-width: 620px; margin: 0 auto 26px; }
+.hero .hero-actions { display: flex; gap: 12px; justify-content: center; }
+
+/* ---------- sections ---------- */
+
+section.block { padding: 56px 0; }
+section.block.alt { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.section-title { font-size: 26px; margin: 0 0 8px; color: var(--blue-900); }
+.section-sub { color: var(--ink-soft); margin: 0 0 30px; max-width: 640px; }
+
+.placeholder-box {
+  border: 2px dashed var(--blue-100);
+  border-radius: var(--radius);
+  padding: 28px;
+  color: black;
+  font-style: fantasy;
+  font-size: 120%;
+  background: var(--blue-50);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.feature-card .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--blue-50);
+  color: var(--blue-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.feature-card.pdf .icon { background: var(--yellow-100); color: var(--blue-900); }
+.feature-card h3 { margin: 0 0 6px; font-size: 15.5px; color: var(--ink); }
+.feature-card p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+
+.pill-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--yellow-400);
+  color: var(--blue-900);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+footer.site-footer {
+  padding: 30px 0 50px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* ---------- sign-in modal ---------- */
+
+dialog#signinDialog {
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  width: 380px;
+  max-width: 92vw;
+  box-shadow: 0 20px 60px rgba(10, 30, 80, 0.28);
+}
+dialog#signinDialog::backdrop { background: rgba(10, 25, 60, 0.45); }
+
+.modal-inner { padding: 28px 26px 24px; }
+.modal-inner h2 { margin: 0 0 4px; font-size: 20px; color: var(--blue-900); }
+.modal-inner .modal-sub { margin: 0 0 20px; font-size: 13px; color: var(--ink-soft); }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+.field input:focus { outline: 2px solid var(--blue-500); outline-offset: 1px; border-color: var(--blue-500); }
+
+.form-error {
+  background: #fdeaea;
+  color: #a3241f;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  margin-bottom: 14px;
+  display: none;
+}
+.form-error.show { display: block; }
+
+.demo-accounts {
+  margin-top: 18px;
+  border-top: 1px dashed var(--border);
+  padding-top: 14px;
+}
+.demo-accounts p { margin: 0 0 8px; font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+.demo-account-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.demo-account-btn:hover { background: var(--blue-100); }
+.demo-account-btn .tier-badge { margin-left: 8px; }
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 30px; }
+  .site-header .wrap { flex-wrap: nowrap; }
+  .account-pill .name { display: none; }
+}

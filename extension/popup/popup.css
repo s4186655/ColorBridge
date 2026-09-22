@@ -1,0 +1,225 @@
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --fg: #111111;
+  --accent: #1a5d1a;
+  --accent-off: #6b6b6b;
+  --border: #333333;
+}
+
+* { box-sizing: border-box; }
+
+/* Author styles otherwise beat the browser's default [hidden]{display:none}
+   rule regardless of specificity, since author CSS always wins over the
+   user-agent stylesheet — this bit ColorBridge's own sign-in button. */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  width: 380px;
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.popup { padding: 16px; }
+
+.top-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+h1 { font-size: 16px; margin: 0; }
+
+.account-line {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  color: #3b82f6;
+  background: #eef7ee;
+  border-radius: 5px;
+  padding: 5px 8px;
+}
+
+.pdf-banner {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #6b4d00;
+  background: #fff6df;
+  border: 1px solid #f0dca0;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.row { margin-bottom: 14px; }
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #444444;
+  margin-bottom: 6px;
+}
+
+#statusText, #lastAnalysisText, #usageText {
+  margin: 0;
+  font-size: 14px;
+}
+
+.hint {
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #555555;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px 4px 4px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.toggle-track {
+  width: 36px;
+  height: 20px;
+  border-radius: 999px;
+  background: #eab308;
+  position: relative;
+  transition: background-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.toggle[aria-checked="true"] .toggle-track { background: #3b82f6; }
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.15s ease;
+}
+
+.toggle[aria-checked="true"] .toggle-thumb { transform: translateX(16px); }
+
+.toggle-text { font-size: 13px; font-weight: 600; }
+
+button:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-btn:disabled {
+  background: #a9a9a9;
+  cursor: not-allowed;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.settings-panel {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #222222;
+  background: #f4f4f4;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+footer { margin-top: 4px; }
+
+/* ---------- PDF capture flow ---------- */
+
+#pdfImageWrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+#pdfCanvas { display: block; max-width: 100%; }
+
+#pdfSelectionBox {
+  position: absolute;
+  display: none;
+  border: 2px dashed #1a73e8;
+  background: rgba(26, 115, 232, 0.12);
+  pointer-events: none;
+}
+
+.field { margin: 12px 0; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333333;
+}
+
+.field textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  resize: vertical;
+}
+
+#pdfCaptureSection .primary-btn,
+#pdfResultSection .primary-btn {
+  margin-bottom: 8px;
+}
+
+#pdfCancelBtn, #pdfDoneBtn { display: block; margin: 0 auto; }
+
+#pdfResultPreview { margin-bottom: 10px; }
+#pdfResultPreview canvas { display: block; max-width: 100%; }
+
+.pdf-result-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 14px;
+}
+.pdf-result-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}

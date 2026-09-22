@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit real credentials
+.env
+.env.local
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+
+# Claude Code plan files (local session state, not project source)
+.claude/

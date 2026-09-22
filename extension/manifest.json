@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "AI Color Accessibility",
+  "version": "0.3.0",
+  "description": "Click any chart and a local vision model works out what its colours mean from the page around it, then marks that meaning with symbols instead of colour. Runs entirely on your own machine.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "http://localhost:8787/*",
+    "http://127.0.0.1:8787/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "AI Color Accessibility"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/colorDetector.js",
+        "content/semanticMapper.js",
+        "content/overlayManager.js",
+        "content/imageProcessor.js",
+        "content/svgProcessor.js",
+        "content/domColorScanner.js",
+        "content/contextCollector.js",
+        "content/visualCapture.js",
+        "content/selectionMode.js",
+        "content/usageTracker.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["http://localhost:5500/*"],
+      "js": ["content/accountSync.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

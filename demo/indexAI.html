@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>AI Color Accessibility — Demo Page</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Arial, sans-serif; max-width: 780px; margin: 32px auto; padding: 0 16px; color: #111; line-height: 1.5; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 17px; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 24px; }
+  .intro { background: #f4f4f4; border-radius: 8px; padding: 12px 16px; font-size: 14px; }
+  .legend { font-size: 13px; color: #444; }
+  ul.results { list-style: none; padding: 0; }
+  ul.results li { padding: 6px 0; font-size: 15px; }
+  .correct { color: #1a8a1a; font-weight: 600; }
+  .incorrect { color: #c62828; font-weight: 600; }
+  table.status-table { border-collapse: collapse; width: 100%; }
+  table.status-table td, table.status-table th { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 14px; }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #fff; }
+  .badge-completed { background: #1a8a1a; }
+  .badge-pending { background: #d4a017; }
+  .badge-failed { background: #c62828; }
+  figure { margin: 0; }
+  figcaption { font-size: 13px; color: #555; margin-top: 6px; }
+  img.chart-img { max-width: 100%; border: 1px solid #ddd; border-radius: 4px; }
+  .risk-row { display: flex; align-items: center; gap: 24px; margin-top: 12px; }
+  .risk-item { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>AI Color Accessibility — Demo Page</h1>
+<p class="intro">
+  Load the <code>extension/</code> folder as an unpacked Chrome extension, start the
+  backend (<code>backend/</code>), open this page, turn the extension ON in the popup,
+  then click <strong>Analyze this page</strong>. Expected results for each section are
+  noted below the heading.
+</p>
+
+<!-- A: Financial chart (raster image, candlestick style). Expected: green candles get ↑, red candles get ↓. -->
+<h2>A. Quarterly Financial Performance</h2>
+<p class="legend">Green candles indicate the stock price increased that day. Red candles indicate the price decreased that day.</p>
+<figure>
+  <img id="financialChart" class="chart-img" alt="Candlestick chart of daily stock price changes" width="420" height="180" />
+  <figcaption>Daily closing price movement, last 5 trading days.</figcaption>
+</figure>
+
+<!-- B: Correctness (DOM text color). Expected: green -> ✓, red -> ✕. -->
+<h2>B. Quiz Results</h2>
+<p class="legend">Correct answers are shown in green. Incorrect answers are shown in red.</p>
+<ul class="results">
+  <li>Question 1: <span class="correct">Correct</span></li>
+  <li>Question 2: <span class="incorrect">Incorrect</span></li>
+  <li>Question 3: <span class="correct">Correct</span></li>
+  <li>Question 4: <span class="incorrect">Incorrect</span></li>
+</ul>
+
+<!-- C: Status (DOM badges). Expected: green -> ✓, yellow -> ⏳, red -> ✕. -->
+<h2>C. Project Status Dashboard</h2>
+<table class="status-table">
+  <thead><tr><th>Task</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>Design review</td><td><span class="badge badge-completed">Completed</span></td></tr>
+    <tr><td>Backend integration</td><td><span class="badge badge-pending">Pending</span></td></tr>
+    <tr><td>Load testing</td><td><span class="badge badge-failed">Failed</span></td></tr>
+    <tr><td>Documentation</td><td><span class="badge badge-completed">Completed</span></td></tr>
+  </tbody>
+</table>
+
+<!-- D: Normal "photograph" (red/green present, but purely decorative). Expected: NO transformation. -->
+<h2>D. Team Photo</h2>
+<figure>
+  <img id="teamPhoto" alt="Team members outdoors" width="320" height="200" />
+  <figcaption>Our team at the retreat.</figcaption>
+</figure>
+
+<!-- E: Ambiguous chart (colors present, no legend/context). Expected: NO aggressive transformation. -->
+<h2>E. Data Overview (ambiguous)</h2>
+<figure>
+  <img id="ambiguousChart" class="chart-img" alt="Bar chart of data overview" width="360" height="160" />
+  <figcaption>Overview chart.</figcaption>
+</figure>
+
+<!-- F: Inline SVG chart (risk gauge). Expected: green -> low-risk symbol, yellow -> warning, red -> high-risk symbol. -->
+<h2>F. Project Risk Assessment</h2>
+<p class="legend">Risk level for this project is shown below. Green = low risk, Yellow = medium risk, Red = high risk.</p>
+<div class="risk-row">
+  <div class="risk-item">
+    <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="green"></circle></svg>
+    Low
+  </div>
+  <div class="risk-item">
+    <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="orange"></circle></svg>
+    Medium
+  </div>
+  <div class="risk-item">
+    <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="red"></circle></svg>
+    High (current)
+  </div>
+</div>
+
+<script>
+  // The financial chart, photo, and ambiguous chart below are generated as inline
+  // SVG data URIs and rendered through <img> tags. This means they go through the
+  // extension's REAL raster-image pipeline (screenshot capture + pixel blob
+  // detection) rather than being DOM-inspectable like section F's inline SVG —
+  // while still not requiring any binary asset files in this repo.
+
+  function svgToDataUri(svg) {
+    return 'data:image/svg+xml;base64,' + btoa(svg);
+  }
+
+  // A) Candlestick chart: 5 candles, alternating green (up) / red (down).
+  (function buildCandlestickChart() {
+    const days = [
+      { color: '#1a8a1a', bodyTop: 60, bodyH: 60, wickTop: 40, wickH: 100 },
+      { color: '#c62828', bodyTop: 70, bodyH: 40, wickTop: 55, wickH: 75 },
+      { color: '#1a8a1a', bodyTop: 50, bodyH: 70, wickTop: 30, wickH: 110 },
+      { color: '#c62828', bodyTop: 65, bodyH: 50, wickTop: 45, wickH: 90 },
+      { color: '#1a8a1a', bodyTop: 45, bodyH: 65, wickTop: 25, wickH: 105 }
+    ];
+    let shapes = '';
+    days.forEach((d, i) => {
+      const x = 40 + i * 70;
+      shapes += `<line x1="${x + 15}" y1="${d.wickTop}" x2="${x + 15}" y2="${d.wickTop + d.wickH}" stroke="${d.color}" stroke-width="2"/>`;
+      shapes += `<rect x="${x}" y="${d.bodyTop}" width="30" height="${d.bodyH}" fill="${d.color}"/>`;
+    });
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="180"><rect width="420" height="180" fill="#ffffff"/>${shapes}</svg>`;
+    document.getElementById('financialChart').src = svgToDataUri(svg);
+  })();
+
+  // D) A "photograph": green grass, red shirt — colors present, but decorative, no legend.
+  (function buildTeamPhoto() {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200">
+      <rect width="320" height="120" fill="#8fd3f4"/>
+      <rect y="120" width="320" height="80" fill="#4caf50"/>
+      <circle cx="110" cy="90" r="18" fill="#e0b088"/>
+      <rect x="92" y="108" width="36" height="55" fill="#c62828" rx="8"/>
+      <circle cx="210" cy="90" r="18" fill="#c98a5a"/>
+      <rect x="192" y="108" width="36" height="55" fill="#2e7d32" rx="8"/>
+    </svg>`;
+    document.getElementById('teamPhoto').src = svgToDataUri(svg);
+  })();
+
+  // E) Ambiguous bar chart: colored bars, but no legend or explanatory text anywhere nearby.
+  (function buildAmbiguousChart() {
+    const bars = [
+      { h: 80, color: '#3f51b5' },
+      { h: 120, color: '#ff9800' },
+      { h: 60, color: '#3f51b5' },
+      { h: 100, color: '#ff9800' }
+    ];
+    let shapes = '';
+    bars.forEach((b, i) => {
+      const x = 30 + i * 80;
+      shapes += `<rect x="${x}" y="${150 - b.h}" width="50" height="${b.h}" fill="${b.color}"/>`;
+    });
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="160"><rect width="360" height="160" fill="#ffffff"/>${shapes}</svg>`;
+    document.getElementById('ambiguousChart').src = svgToDataUri(svg);
+  })();
+</script>
+
+</body>
+</html>

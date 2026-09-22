@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ColorBridge</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="/" class="brand">
+      <img src="logo1.png" alt="ColorBridge logo" style="width:32px;height:32px;object-fit:contain;border-radius:8px;">
+      ColorBridge
+    </a>
+
+    <div class="header-actions">
+      <!-- Signed-out state -->
+      <button id="signinBtn" class="btn btn-primary">Sign in</button>
+
+      <!-- Signed-in state (hidden until app.js fills it in) -->
+      <button id="accountPill" class="account-pill" hidden aria-haspopup="true" aria-expanded="false">
+        <span class="avatar" id="avatarLetter">?</span>
+        <span class="name" id="accountName">Account</span>
+        <span class="tier-badge" id="accountTierBadge">free</span>
+      </button>
+
+      <div class="dropdown" id="accountDropdown">
+        <p class="who" id="dropdownEmail">you@example.com</p>
+
+        <div class="plan-line">
+          <span>Current plan</span>
+          <strong id="dropdownPlan">Free</strong>
+        </div>
+
+        <!-- Shown only for free accounts -->
+        <div class="upgrade-box" id="upgradeBox">
+          <div class="price">59.000₫ <span>/ month</span></div>
+          <ul>
+            <li>Unlimited converts (no 10/day limit)</li>
+            <li>Priority support</li>
+          </ul>
+          <button id="upgradeBtn" class="btn btn-accent btn-block">Upgrade to Pro</button>
+        </div>
+
+        <!-- Shown only for pro accounts -->
+        <p id="proNote" hidden style="font-size:13px; color:var(--ink-soft); margin: 0 0 12px;">
+          You have unlimited converts on this account. Thanks for supporting ColorBridge ✨
+        </p>
+
+        <button id="signoutBtn" class="signout">Sign out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>See what <span class="accent">color</span> is really telling you</h1>
+    <p class="tagline">
+      ColorBridge is a Chrome extension that reads a chart's legend, headings and captions,
+      then explains what its colours mean - without ever assuming green is good and red is bad.
+    </p>
+    <div class="hero-actions">
+      <button id="heroSigninBtn" class="btn btn-primary">Get started - Sign in</button>
+      <a href="#offer" class="btn btn-ghost">See what it offers</a>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <h2 class="section-title">What is ColorBridge?</h2>
+    <p class="section-sub"></p>
+    <!-- TODO: write your own description here. -->
+    <div class="placeholder-box">
+      COLORBRIDGE is an AI-powered browser extension designed to make data visualization accessible for individuals with red-green color blindness. By automatically analyzing charts, graphs, and visual data on the web, it instantly converts them into high-contrast, easy-to-read formats.
+
+No more second-guessing color-coded metrics-COLORBRIDGE ensures you can interpret data accurately, effortlessly, and with total confidence.
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="offer">
+  <div class="wrap">
+    <h2 class="section-title">What we offer</h2>
+    <p class="section-sub">Everything the extension currently does, today.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">👆</div>
+        <h3>Click to analyse</h3>
+        <p>Point at one chart, table or status label instead of scanning the whole page - faster, and it matches how the free plan counts usage.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🔒</div>
+        <h3>Runs entirely on your machine</h3>
+        <p>A vision-language model (Ollama + Qwen3-VL) runs locally. No cloud API, nothing about your screen ever leaves your computer.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🧠</div>
+        <h3>Reads context, not assumptions</h3>
+        <p>The legend, heading and caption around a chart decide what a colour means - the same green can mean "increase" on one page and "low risk" on another.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">◭</div>
+        <h3>Works on real chart types</h3>
+        <p>Inline SVG charts, &lt;canvas&gt; charts (Chart.js and similar), raster images, and colour-coded HTML like status badges and tables.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">↑↓</div>
+        <h3>Shape-based symbols only</h3>
+        <p>Arrows, checkmarks, crosses and warning signs - never a coloured dot. A symbol that only works for people who can already see colour is rejected automatically.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🚫</div>
+        <h3>Knows when to do nothing</h3>
+        <p>Photographs and decorative images are left untouched, and low-confidence guesses are refused rather than shown.</p>
+      </div>
+
+      <div class="feature-card pdf">
+        
+        <div class="icon">📄</div>
+        <h3>PDF support</h3>
+        <p>Chrome's built-in PDF viewer can't be reached the normal way, so PDFs use a dedicated flow: capture the page, drag a box around a chart, and get the answer right in the popup.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">ColorBridge - a local-first accessibility project. No account data leaves your browser.</div>
+</footer>
+
+<!-- Sign-in modal -->
+<dialog id="signinDialog">
+  <div class="modal-inner">
+    <button class="modal-close" id="closeSigninBtn" aria-label="Close">&times;</button>
+    <h2>Sign in to ColorBridge</h2>
+    <p class="modal-sub">This is a local demo - no data leaves your browser.</p>
+
+    <p class="form-error" id="loginError">Incorrect email or password.</p>
+
+    <form id="signinForm">
+      <div class="field">
+        <label for="emailInput">Email</label>
+        <input id="emailInput" type="email" autocomplete="username" required />
+      </div>
+      <div class="field">
+        <label for="passwordInput">Password</label>
+        <input id="passwordInput" type="password" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <div class="demo-accounts">
+      <p>Or use a demo account</p>
+      <button type="button" class="demo-account-btn" data-demo="free">
+        free&#64;colorbridge.app <span class="tier-badge free">free</span>
+      </button>
+      <button type="button" class="demo-account-btn" data-demo="pro">
+        pro&#64;colorbridge.app <span class="tier-badge pro">pro</span>
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
