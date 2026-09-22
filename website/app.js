@@ -69,6 +69,7 @@ function render() {
   const signedIn = Boolean(session);
 
   els.signinBtn.hidden = signedIn;
+  els.heroSigninBtn.hidden = signedIn;
   els.accountPill.hidden = !signedIn;
   els.dropdown.classList.remove('open');
   els.accountPill.setAttribute('aria-expanded', 'false');
