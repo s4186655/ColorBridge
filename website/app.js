@@ -145,9 +145,13 @@ els.signoutBtn.addEventListener('click', () => {
   clearSession();
 });
 
-// Not wired to a real payment flow yet — just goes back to the homepage.
+// Not wired to a real payment flow yet — just reloads the homepage.
+// (Was `window.location.href = '/'`, which 404'd on GitHub Pages: a project
+// page like /ColorBridge/ isn't served at the domain root, only at its own
+// path. Reloading the current page works the same on localhost and on Pages,
+// with no path to get wrong.)
 els.upgradeBtn.addEventListener('click', () => {
-  window.location.href = '/';
+  window.location.reload();
 });
 
 render();
